@@ -18,7 +18,7 @@ if(port == undefined) {
     port = 3000
 }
 
-const transactions = []
+let transactions = []
 const nodes = [] 
 
 let genesisBlock = new Block()
@@ -51,11 +51,12 @@ app.post('/transactions', (req, res) => {
 app.get('/mine', (req, res) => {
     const block = blockchain.getNextBlock(transactions)
     blockchain.addBlock(block)
+    transactions = []
     res.json(block)
 })
 
 app.get('/blockchain', (req, res) => {
-    res.json(blockchain)
+    res.json(blockchain) 
 })
 
 
