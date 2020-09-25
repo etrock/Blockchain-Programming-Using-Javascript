@@ -4,6 +4,8 @@ const Transaction = require('./transaction')
 
 const bodyParser = require('body-parser')
 const express = require('express')
+const fetch = require('node-fetch');
+
 const BlockchainNode = require('./BlockchainNode')
 const app = express()
 
@@ -19,13 +21,30 @@ if(port == undefined) {
 }
 
 let transactions = []
-const nodes = [] 
+let nodes = [] 
 
 let genesisBlock = new Block()
 let blockchain = new Blockchain(genesisBlock)
 
 app.use(bodyParser.json())
 
+app.get('/resolve', (req, res) => {
+
+    nodes.forEach( (node) => {
+        console.log(node)
+        fetch(node.url + '/blockchain')
+        .then( (response) => {
+            return response.json()
+        })
+        .then( (otherNodeBlockchain) => {
+            if(blockchain.blocks.length < otherNodeBlockchain.blocks.length){
+                blockchain = otherNodeBlockchain
+            }
+            res.send(blockchain)
+        })
+    })
+
+})
 
 app.post('/nodes/register', (req,res) => {
     const nodesLists = req.body.urls
