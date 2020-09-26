@@ -62,6 +62,16 @@ app.get('/nodes', (req,res) => {
     res.json(nodes)
 })
 
+app.get('/driving-records/:driverLicenseNumber', (req, res) => {
+    
+    let driverLicenseNumber = sha256(req.params.driverLicenseNumber)
+    console.log(driverLicenseNumber)
+    let transactions = blockchain.transactionsByDriverLicenseNumber(driverLicenseNumber)
+
+    res.json(transactions)
+
+})
+
 app.post('/transactions', (req, res) => {
 
     let drivingRecordSmartContract = new DrivingRecordSmartContract()

@@ -17,6 +17,20 @@ class Blockchain {
         this.blocks.push(block)
     }
 
+    transactionsByDriverLicenseNumber(driverLicenseNumber) {
+
+        let transactions = []
+
+        this.blocks.forEach( block => {
+            block.transactions.forEach(transaction => {
+                if(driverLicenseNumber == transaction.driverLicenseNumber) {
+                    transactions.push(transaction)
+                }
+            })
+        })
+        return transactions
+    }
+
     getNextBlock(transactions) {
         
         let block = new Block()
