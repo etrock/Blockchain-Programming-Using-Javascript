@@ -1,6 +1,7 @@
 const Block = require('./block')
 const Blockchain = require('./blockchain')
 const Transaction = require('./transaction')
+const DrivingRecordSmartContract = require('./smartContracts')
 
 const bodyParser = require('body-parser')
 const express = require('express')
@@ -63,9 +64,14 @@ app.get('/nodes', (req,res) => {
 
 app.post('/transactions', (req, res) => {
 
+    let drivingRecordSmartContract = new DrivingRecordSmartContract()
+
     let {driverLicenseNumber, violationDate, violationType} = req.body
     driverLicenseNumber = sha256(driverLicenseNumber)
-    const transaction = new Transaction(driverLicenseNumber,violationDate, violationType)
+    let transaction = new Transaction(driverLicenseNumber,violationDate, violationType)
+
+    drivingRecordSmartContract.apply(transaction , blockchain.blocks)
+
     transactions.push(transaction)
     res.json(transactions)
 })

@@ -1,10 +1,10 @@
 class Transaction {
 
-    constructor(driverLicenseNumber, violationDate, violiationType){
+    constructor(driverLicenseNumber, violationDate, violationType){
         this.driverLicenseNumber = driverLicenseNumber
         this.violationDate = violationDate
-        this.violiationType = violiationType
-        this.noOfViolation = 1
+        this.violationType = violationType
+        this.noOfViolations = 1
         this.isDriverLicenseSuspended = false
     }
 }
